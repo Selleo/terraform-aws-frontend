@@ -1,13 +1,8 @@
-locals {
-  zone_name   = "example.com"
-  domain_name = "app.example.com"
-}
-
 module "example_aws_frontend_app" {
   source = "./../../modules/aws-frontend-app"
 
   comment         = "My new website"
-  aliases         = []
+  aliases         = [var.app_domain_name]
   certificate_arn = aws_acm_certificate.my_app.arn
 
   s3_origin = {
@@ -24,7 +19,7 @@ module "example_aws_frontend_app" {
 # s3
 
 resource "aws_s3_bucket" "my_app" {
-  bucket = "selleo-my-app"
+  bucket = var.app_s3_bucket_name
   acl    = "private"
 
   tags = {
@@ -64,7 +59,7 @@ resource "aws_s3_bucket_policy" "my_app" {
 
 resource "aws_acm_certificate" "my_app" {
   validation_method = "DNS"
-  domain_name       = local.domain_name
+  domain_name       = var.app_domain_name
 
   tags = {
     Group = "Frontend"
@@ -95,6 +90,6 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 data "aws_route53_zone" "my_app" {
-  name         = local.zone_name
+  name         = var.route_53_zone_name
   private_zone = false
 }
