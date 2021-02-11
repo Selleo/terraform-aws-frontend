@@ -4,8 +4,8 @@ Collection of Terraform modules for frontend app deployment on AWS.
 
 ## Maintainers
 
-* Bartłomiej Wójtowicz (@qbart) 
-* Łukasz Pawlik (@LukeP91)
+* Bartłomiej Wójtowicz ([@qbart](https://github.com/qbart)) 
+* Łukasz Pawlik ([@LukeP91](https://github.com/LukeP91))
 
 ## LICENSE
 

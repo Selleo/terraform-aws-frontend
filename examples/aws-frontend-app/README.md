@@ -12,7 +12,7 @@ Define app using module without `aliases`. They will defined later as domain nee
 
 ```tf
 module "example_aws_frontend_app" {
-  source = "Selleo/selleo/aws//examples/aws-frontend-app"
+  source = "Selleo/frontend/aws//examples/aws-frontend-app"
   version = "0.0.3"
 
   comment         = "My new website"
