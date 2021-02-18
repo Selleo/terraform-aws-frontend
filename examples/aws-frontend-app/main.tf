@@ -11,8 +11,22 @@ module "example_aws_frontend_app" {
   }
 
   tags = {
-    Group = "Frontend"
-    Name  = "My app"
+    group = "Frontend"
+    name  = "My app"
+  }
+}
+
+# Route53 record
+
+resource "aws_route53_record" "my_app" {
+  zone_id = data.aws_route53_zone.my_app.zone_id
+  name    = "test"
+  type    = "A"
+
+  alias {
+    name                   = module.example_aws_frontend_app.domain_name
+    zone_id                = module.example_aws_frontend_app.hosted_zone_id
+    evaluate_target_health = true
   }
 }
 
@@ -23,8 +37,8 @@ resource "aws_s3_bucket" "my_app" {
   acl    = "private"
 
   tags = {
-    Group = "Frontend"
-    Name  = "My app"
+    group = "Frontend"
+    name  = "My app"
   }
 }
 
@@ -44,7 +58,7 @@ data "aws_iam_policy_document" "s3_my_app" {
 
     principals {
       type        = "AWS"
-      identifiers = ["*"]
+      identifiers = [module.example_aws_frontend_app.oai_iam_arn]
     }
   }
 }
@@ -58,12 +72,14 @@ resource "aws_s3_bucket_policy" "my_app" {
 # cert
 
 resource "aws_acm_certificate" "my_app" {
+  provider = aws.global
+
   validation_method = "DNS"
   domain_name       = var.app_domain_name
 
   tags = {
-    Group = "Frontend"
-    Name  = "My app"
+    group = "Frontend"
+    name  = "My app"
   }
 
   lifecycle {
@@ -74,6 +90,8 @@ resource "aws_acm_certificate" "my_app" {
 # domain
 
 resource "aws_route53_record" "cert_validation" {
+  provider = aws.global
+
   for_each = {
     for dvo in aws_acm_certificate.my_app.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
