@@ -20,7 +20,7 @@ output "hosted_zone_id" {
 
 output "oai_iam_arn" {
   value       = aws_cloudfront_origin_access_identity.this.iam_arn
-  description = "OAI pre-generated ARN that can be used in S3 bucket policies."
+  description = "Origin Access Identity pre-generated ARN that can be used in S3 bucket policies."
 }
 
 output "distribution_invalidation_policy_json" {
