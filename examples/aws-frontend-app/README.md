@@ -44,3 +44,12 @@ module "example_aws_frontend_app" {
 }
 ```
 
+## How to deploy using AWS CLI
+
+For complex app structure use `aws s3 sync` instead of `aws s3 copy`.
+
+```bash
+echo '<html><body><h1>Hello there!</h1></body></html>' > index.html^C
+aws --profile AWS_PROFILE_NAME_HERE s3 cp index.html s3://BUCKET_NAME_HERE/my-app/
+aws --profile AWS_PROFILE_NAME_HERE cloudfront create-invalidation --distribution-id DISTRO_ID_HERE --paths '/*'
+```
