@@ -74,3 +74,19 @@ resource "aws_cloudfront_distribution" "this" {
 resource "aws_cloudfront_origin_access_identity" "this" {
   comment = var.comment
 }
+
+data "aws_iam_policy_document" "this" {
+  version = "2012-10-17"
+
+  statement {
+    sid = 1
+
+    actions = [
+      "cloudfront:CreateInvalidation",
+    ]
+
+    resources = [
+      aws_cloudfront_distribution.this.arn
+    ]
+  }
+}

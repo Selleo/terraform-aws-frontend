@@ -111,3 +111,16 @@ data "aws_route53_zone" "my_app" {
   name         = var.route_53_zone_name
   private_zone = false
 }
+
+# deploy user
+
+resource "aws_iam_user" "deployer" {
+  name = "deployer"
+}
+
+resource "aws_iam_user_policy" "cf_invalidation" {
+  name = "cf_invalidation"
+  user = aws_iam_user.deployer.name
+
+  policy = module.example_aws_frontend_app.distribution_invalidation_policy_json
+}
