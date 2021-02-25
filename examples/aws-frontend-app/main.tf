@@ -107,6 +107,8 @@ resource "aws_route53_record" "cert_validation" {
   records = [each.value.record]
 }
 
+# alternatively you can use: https://github.com/terraform-aws-modules/terraform-aws-acm
+
 data "aws_route53_zone" "my_app" {
   name         = var.route_53_zone_name
   private_zone = false
@@ -118,9 +120,52 @@ resource "aws_iam_user" "deployer" {
   name = "deployer"
 }
 
-resource "aws_iam_user_policy" "cf_invalidation" {
-  name = "cf_invalidation"
-  user = aws_iam_user.deployer.name
+# deployer policy for syncing with s3
 
-  policy = module.example_aws_frontend_app.distribution_invalidation_policy_json
+data "aws_iam_policy_document" "deployer_s3_access" {
+  version = "2012-10-17"
+
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+    ]
+    resources = [
+      aws_s3_bucket.my_app.arn
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:PutObject",
+      "s3:DeleteObject",
+    ]
+    resources = [
+      "${aws_s3_bucket.my_app.arn}/*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "deployer_s3_access" {
+  name        = "deployer_s3_access"
+  description = "Allows to sync files with s3"
+  policy      = data.aws_iam_policy_document.deployer_s3_access.json
+}
+
+resource "aws_iam_user_policy_attachment" "deployer_s3_access" {
+  user       = aws_iam_user.deployer.name
+  policy_arn = aws_iam_policy.deployer_s3_access.arn
+}
+
+# deployer policy for cloudfront invalidation
+
+resource "aws_iam_policy" "deployer_cdn_invalidation" {
+  name        = "deployer_cdn_invalidation"
+  description = "Allows to invalidate Cloudfront distribution"
+  policy      = module.example_aws_frontend_app.distribution_invalidation_policy_json
+}
+
+resource "aws_iam_user_policy_attachment" "deployer_cdn_invalidation" {
+  user       = aws_iam_user.deployer.name
+  policy_arn = aws_iam_policy.deployer_cdn_invalidation.arn
 }
