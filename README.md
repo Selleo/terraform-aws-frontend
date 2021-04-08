@@ -2,6 +2,10 @@
 
 Collection of Terraform modules for frontend app deployment on AWS.
 
+## List of submodules
+
+* [Frontend app](https://registry.terraform.io/modules/Selleo/frontend/aws/latest/submodules/aws-frontend-app)
+
 ## Maintainers
 
 * Bartłomiej Wójtowicz ([@qbart](https://github.com/qbart)) 
