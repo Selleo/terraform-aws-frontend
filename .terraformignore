@@ -1,3 +1,5 @@
 .git/
 /bin/
-README.md
+/tmp/
+*.md
+LICENSE
