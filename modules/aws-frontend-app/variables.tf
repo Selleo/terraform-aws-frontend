@@ -24,12 +24,13 @@ variable "s3_origin" {
   description = "S3 origin configuration"
 }
 
+# optional
+
 variable "tags" {
   type        = map(string)
   description = "Tags attached to Cloudfront distribution."
+  default     = {}
 }
-
-# optional
 
 variable "custom_error_responses" {
   type = list(object({
