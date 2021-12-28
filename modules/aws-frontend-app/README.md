@@ -136,8 +136,9 @@ No modules.
 | <a name="input_default_cache_behavior"></a> [default\_cache\_behavior](#input\_default\_cache\_behavior) | Default cache behavior for this distribution | <pre>object({<br>    allowed_methods = list(string),<br>    cached_methods  = list(string),<br>    min_ttl         = number<br>    max_ttl         = number<br>    default_ttl     = number<br>    compress        = bool<br>  })</pre> | <pre>{<br>  "allowed_methods": [<br>    "DELETE",<br>    "GET",<br>    "HEAD",<br>    "OPTIONS",<br>    "PATCH",<br>    "POST",<br>    "PUT"<br>  ],<br>  "cached_methods": [<br>    "GET",<br>    "HEAD"<br>  ],<br>  "compress": true,<br>  "default_ttl": 3600,<br>  "max_ttl": 86400,<br>  "min_ttl": 0<br>}</pre> | no |
 | <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | The object that you want CDN to return when an user requests the root URL. | `string` | `"index.html"` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Cloudfront distribution's price class. | `string` | `"PriceClass_100"` | no |
+| <a name="input_response_headers_policy_id"></a> [response\_headers\_policy\_id](#input\_response\_headers\_policy\_id) | The identifier for a response headers policy. | `string` | `null` | no |
 | <a name="input_s3_origin"></a> [s3\_origin](#input\_s3\_origin) | S3 origin configuration | <pre>object({<br>    path                        = string<br>    bucket_regional_domain_name = string<br>  })</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags attached to Cloudfront distribution. | `map(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags attached to Cloudfront distribution. | `map(string)` | `{}` | no |
 
 ## Outputs
 

@@ -81,6 +81,12 @@ variable "default_cache_behavior" {
   description = "Default cache behavior for this distribution"
 }
 
+variable "response_headers_policy_id" {
+  type        = string
+  description = "The identifier for a response headers policy."
+  default     = null
+}
+
 variable "price_class" {
   type        = string
   description = "Cloudfront distribution's price class."

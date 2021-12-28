@@ -42,6 +42,8 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods   = var.default_cache_behavior.cached_methods
     target_origin_id = local.origin_id
 
+    response_headers_policy_id = var.response_headers_policy_id
+
     forwarded_values {
       query_string = false
 
